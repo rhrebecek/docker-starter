@@ -1,0 +1,41 @@
+version: '3.7'
+services:
+    database:
+        image: mariadb:10
+        restart: always
+        ports:
+            - 3308:3306
+        environment:
+            - MYSQL_ROOT_PASSWORD=password
+            - MYSQL_DATABASE=nette-project
+
+    adminer:
+        image: adminer:latest
+        restart: always
+        links:
+            - database
+        depends_on:
+            - database
+        environment:
+            - ADMINER_DEFAULT_SERVER=database
+        ports:
+            - 8080:8080
+
+    php:
+        build: ./php-fpm
+        links:
+            - database
+        volumes:
+            - ./:/var/www:cached
+
+    nginx:
+        build: ./nginx
+        ports: 
+            - 8000:80
+        links:
+            - php
+        depends_on:
+            - php
+        volumes:
+            - ./logs:/var/log/nginx:cached
+            - ./:/var/www:cached
