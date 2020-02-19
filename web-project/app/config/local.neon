@@ -1,0 +1,7 @@
+parameters:
+
+
+database:
+	dsn: 'mysql:host=database;dbname=nette-project'
+	user: root
+	password: password
