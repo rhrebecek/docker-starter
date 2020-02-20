@@ -28,6 +28,11 @@ services:
         volumes:
             - ./:/var/www:cached
 
+    node:
+        build: ./node
+        volumes:
+            - ./:/var/www:cached
+
     nginx:
         build: ./nginx
         ports: 
